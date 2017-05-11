@@ -10,7 +10,7 @@ public class ReturnMessage {
 	private Color color = null;
 	private String message = null;
 	private String imageURL = null, thumbnailURL = null;
-	private String title = null;
+	private String title = null, displayURL = null;
 
 	public ReturnMessage() {
 		this.color = Color.WHITE;
@@ -69,6 +69,15 @@ public class ReturnMessage {
 		return this;
 	}
 
+	public String getDisplayURL() {
+		return displayURL;
+	}
+
+	public ReturnMessage setDisplayURL(String displayURL) {
+		this.displayURL = displayURL;
+		return this;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -83,20 +92,30 @@ public class ReturnMessage {
 	}
 
 	public MessageEmbed build(){
+		System.out.println("Building...");
 		EmbedBuilder embB = new EmbedBuilder();
 		String title = getTitle() != null ? getTitle() : "";
 		String msg = getMessage() != null ? getMessage() : "";
 		Color clr = getColor() != null ? getColor() : Color.WHITE;
 		String url = getImageURL() != null ? getImageURL() : null;
 		String thumb = getThumbnailURL() != null ? getThumbnailURL() : null;
-		if (!title.equalsIgnoreCase("")) {
-			embB.addField(title, msg, true);
+		String displayURL = getDisplayURL() != null ? getDisplayURL() : null;
+		if (displayURL == null) {
+			System.out.println("No display URL");
+			if (!title.equalsIgnoreCase("")) {
+				embB.addField(title, msg, true);
+			} else {
+				embB.setDescription(msg);
+			}
 		}else{
+			System.out.println("Display URL");
+			embB.setTitle(title, displayURL);
 			embB.setDescription(msg);
 		}
 		embB.setColor(clr);
 		embB.setImage(url);
 		embB.setThumbnail(thumb);
+		System.out.println("Finished");
 		return embB.build();
 	}
 

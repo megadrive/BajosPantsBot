@@ -61,8 +61,10 @@ public class EventListener extends ListenerAdapter {
 			Date cur = Calendar.getInstance(TimeZone.getTimeZone("Australia/Melbourne")).getTime();
 
 			if (event.getMember().getUser().getId().equalsIgnoreCase("113462564217683968") && event.getMessage()
-					.getContent().contains("force")){
-				Role thankedTheMaker = message.getGuild().getRoleById("309993171939753984");
+					.getContent().toLowerCase().contains("force")){
+
+				Role thankedTheMaker = message.getGuild().getRoleById("311447038279811076");
+
 				KingMain.getMsgMan().sendMessage(event.getTextChannel(), new ReturnMessage().setColor
 						(Color.YELLOW).setTitle("THANK THE MAKER").setThumbnailURL
 								("https://cdn.discordapp.com/emojis/311466093329776641.png").setMessage(

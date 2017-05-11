@@ -59,40 +59,24 @@ public class MessageManager {
 
 		PrivateChannel chnl = !member.getUser().hasPrivateChannel() ? member.getUser().openPrivateChannel().complete() : member
 				.getUser().getPrivateChannel();
-		try{
-			MessageEmbed emb = new EmbedBuilder().setColor(color).setDescription(content).build();
-			chnl.sendMessage(emb).complete(true);
-		}catch (RateLimitedException e){
-
-		}
+		MessageEmbed emb = new EmbedBuilder().setColor(color).setDescription(content).build();
+		chnl.sendMessage(emb).complete();
 	}
 
 	public void sendMessage(PrivateChannel chnl, Color color, String content){
-		try{
 			MessageEmbed emb = new EmbedBuilder().setColor(color).setDescription(content).build();
-			chnl.sendMessage(emb).complete(true);
+			chnl.sendMessage(emb).complete();
 			MessageEmbed emb2 = new EmbedBuilder().setColor(Color.RED).addField("Sent a message to " + chnl.getName()
 					, "Message Contents: \n```\n" + content + "\n```", true).build();
-			KingMain.getDebugChannel().sendMessage(emb2).complete(true);
-		}catch (RateLimitedException e){
-
-		}
+			KingMain.getDebugChannel().sendMessage(emb2).complete();
 	}
 
 	public void deleteMessage(Message m){
-		try{
-			m.delete().complete(true);
-		}catch (RateLimitedException e){
-
-		}
+			m.delete().complete();
 	}
 
 	public void sendMessage(TextChannel chnl, ReturnMessage msg){
-		try{
-			chnl.sendMessage(msg.build()).complete(true);
-		}catch (RateLimitedException e){
-
-		}
+			chnl.sendMessage(msg.build()).complete();
 	}
 
 	public void log(TextChannel chnl, String content){
@@ -100,13 +84,8 @@ public class MessageManager {
 	}
 
 	public void log(TextChannel chnl, Color color, String content){
-		try{
-
-			MessageEmbed emb = new EmbedBuilder().setColor(color).setDescription(content).build();
-			chnl.sendMessage(emb).complete(true);
-		}catch (RateLimitedException e){
-
-		}
+		MessageEmbed emb = new EmbedBuilder().setColor(color).setDescription(content).build();
+		chnl.sendMessage(emb).complete();
 	}
 
 }

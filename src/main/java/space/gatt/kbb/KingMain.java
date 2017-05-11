@@ -1,5 +1,6 @@
 package space.gatt.kbb;
 
+import com.google.gson.JsonElement;
 import net.dv8tion.jda.bot.JDABot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -8,6 +9,8 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import space.gatt.kbb.commandmanager.CommandListener;
 import space.gatt.kbb.commandmanager.CommandManager;
+import space.gatt.kbb.commandmanager.ReturnMessage;
+import space.gatt.kbb.streamtracker.StreamTracker;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -16,6 +19,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class KingMain {
 
@@ -33,6 +37,7 @@ public class KingMain {
 	private static Role subMateRole, verifiedMember, cycleColor;
 
 	private static CommandManager cmdMan;
+	private static StreamTracker tracker;
 
 	private static HashMap<String, String> messageStorage = new HashMap<>();
 
@@ -40,7 +45,9 @@ public class KingMain {
 		messageStorage.put(key, mes);
 	}
 
+
 	public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException {
+
 		Settings.setCommandStarter("_");
 		msgMan = new MessageManager();
 		cmdMan = new CommandManager();
@@ -70,16 +77,77 @@ public class KingMain {
 				startCycleRotator();
 			}
 			for (Emote e : bajoGuild.getEmotes()){
-				emoteStorage.put(e.getName(), e);
-				System.out.println("Registered " + e.getName() + " for " + e + " (M: " + e.getAsMention() +"  ID: "
+				emoteStorage.put(e.getName().toLowerCase(), e);
+				System.out.println("Registered " + e.getName().toLowerCase() + " for " + e + " (M: " + e.getAsMention() +"  ID: "
 						+ e.getId() + ")");
 			}
 		}
+		tracker = new StreamTracker(args[1]);
+		startStreamTracker();
 		System.out.println("Running from: " + System.getProperty("user.dir"));
 	}
 
 	public static MessageManager getMsgMan() {
 		return msgMan;
+	}
+
+	private static boolean bajoLastStreamState = false, gattLastStreamState = false;
+
+	public static StreamTracker getStreamTracker() {
+		return tracker;
+	}
+
+	private static void startStreamTracker(){
+		getScheduler().scheduleAtFixedRate(()->{
+			System.out.println("Checking for streams... BajoStream");
+			JsonElement currentBajo = tracker.getStreamData("bajostream");
+			JsonElement currentGatt = tracker.getStreamData("reallygatt");
+			boolean isBajoStreaming = tracker.isStreamLive(currentBajo);
+			System.out.println("Got the data: " + isBajoStreaming);
+			if (bajoLastStreamState != isBajoStreaming){
+				bajoLastStreamState = isBajoStreaming;
+				if (isBajoStreaming){
+					getMsgMan().sendMessage(bajoGuild.getTextChannelById("294443160581701632"),
+							new ReturnMessage().setColor(Color.GREEN).setMessage(getEmoteStorage().get("gasp")
+									.getAsMention() + " @everyone Our lord and glorious saviour **[Bajo]" +
+									"(https://twitch.tv/bajostream)** has " +
+									"started streaming! Head on over!" +
+									"\n\n__**[Now Playing:]()**__ " + currentBajo.getAsJsonObject().get("game")
+									.getAsString()
+									+ "\n__**[Stream Title:]()**__ " + currentBajo.getAsJsonObject().get(
+									"channel").getAsJsonObject().get("status").getAsString()
+									+ "\n__**[Viewers:]()**__ " + currentBajo.getAsJsonObject().get("viewers")
+									.getAsString())
+									.setDisplayURL("https://twitch.tv/bajostream").setTitle("Twitch.TV Updates")
+									.setImageURL(currentGatt.getAsJsonObject().get("preview").getAsJsonObject()
+											.get("large").getAsString()));
+				}
+			}
+
+			boolean isGattStreaming = tracker.isStreamLive(currentGatt);
+
+			if (gattLastStreamState != isGattStreaming){
+				gattLastStreamState = isGattStreaming;
+				if (isGattStreaming){
+
+					getMsgMan().sendMessage(bajoGuild.getTextChannelById("294443160581701632"),
+							new ReturnMessage().setColor(Color.GREEN).setMessage(getEmoteStorage().get("gasp")
+									.getAsMention() + " Oh wow, my master **[Gatt](https://twitch.tv/reallygatt)** is" +
+									" now streaming?! You should [go watch!](https://twitch.tv/reallygatt)" +
+									"\n\n__**[Now Playing:]()**__ " +
+									currentGatt.getAsJsonObject().get("game").getAsString()
+									+ "\n__**[Stream Title:]()**__ " + currentGatt.getAsJsonObject().get(
+											"channel").getAsJsonObject().get("status").getAsString()
+									+ "\n__**[Viewers:]()**__ " + currentGatt.getAsJsonObject().get("viewers")
+									.getAsString())
+									.setDisplayURL("https://twitch.tv/reallygatt").setTitle("Twitch.TV Updates")
+									.setImageURL(currentGatt.getAsJsonObject().get("preview").getAsJsonObject()
+											.get("large").getAsString()));
+
+				}
+			}
+
+		}, 10, 5*60, TimeUnit.SECONDS);
 	}
 
 	private static void startCycleRotator(){
