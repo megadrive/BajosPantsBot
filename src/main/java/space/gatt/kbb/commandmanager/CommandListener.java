@@ -1,6 +1,5 @@
 package space.gatt.kbb.commandmanager;
 
-import com.google.common.base.Splitter;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -8,17 +7,14 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import space.gatt.kbb.KingMain;
-import space.gatt.kbb.MessageManager;
 import space.gatt.kbb.Settings;
 import space.gatt.kbb.annotations.CommandSettings;
 import space.gatt.kbb.annotations.Permissions;
 
 import java.awt.*;
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
 
 public class CommandListener extends ListenerAdapter {
 	@Override
@@ -42,47 +38,47 @@ public class CommandListener extends ListenerAdapter {
 				boolean ranksById = false;
 				String[] ranks = new String[]{};
 
-				for (Annotation a : enclosingClass.getAnnotations()){
-					if (a instanceof Permissions){
-						ranks = ((Permissions)a).ranks();
-						adminOnly = ((Permissions)a).adminOnly();
-						ranksById = ((Permissions)a).ranksById();
+				for (Annotation a : enclosingClass.getAnnotations()) {
+					if (a instanceof Permissions) {
+						ranks = ((Permissions) a).ranks();
+						adminOnly = ((Permissions) a).adminOnly();
+						ranksById = ((Permissions) a).ranksById();
 					}
-					if (a instanceof CommandSettings){
-						deleteMsg = ((CommandSettings)a).deleteInitatingMsg();
-						sendPM = ((CommandSettings)a).sendResponseViaPM();
-						requiresPM = ((CommandSettings)a).requiresPM();
+					if (a instanceof CommandSettings) {
+						deleteMsg = ((CommandSettings) a).deleteInitatingMsg();
+						sendPM = ((CommandSettings) a).sendResponseViaPM();
+						requiresPM = ((CommandSettings) a).requiresPM();
 					}
 				}
 
-				if (requiresPM){
-					if (!message.isFromType(ChannelType.PRIVATE)){
+				if (requiresPM) {
+					if (!message.isFromType(ChannelType.PRIVATE)) {
 						return;
 					}
 				}
 
-				if (deleteMsg){
+				if (deleteMsg) {
 					try {
 						message.delete().complete(true);
-					}catch (RateLimitedException e){
+					} catch (RateLimitedException e) {
 					}
 				}
 
-				if (adminOnly){
-					if (!(KingMain.getCmdMan().getAdminusers().contains(message.getAuthor().getId()))){
+				if (adminOnly) {
+					if (!(KingMain.getCmdMan().getAdminusers().contains(message.getAuthor().getId()))) {
 						String reply = Settings.getMsgStarter() + "You are not one on my Admin List! Sorry!";
-						if (sendPM){
+						if (sendPM) {
 							try {
 								message.getAuthor().getPrivateChannel().sendMessage(reply).complete(true);
-							}catch (RateLimitedException e){
+							} catch (RateLimitedException e) {
 							}
-						}else{
+						} else {
 							KingMain.getMsgMan().sendMessage(message.getTextChannel(), reply);
 						}
 						return;
 					}
 				}
-				if (ranks.length > 0 && !ranks[0].equals("null")){
+				if (ranks.length > 0 && !ranks[0].equals("null")) {
 					for (String rank : ranks) {
 						boolean hasRank = !ranksById ? KingMain.getCmdMan().hasRole(event.getMember(), rank, true) :
 								KingMain.getCmdMan().hasRoleById(event.getMember(), rank);
@@ -91,7 +87,7 @@ public class CommandListener extends ListenerAdapter {
 							for (String r : ranks) {
 								if (!ranksById) {
 									reply = reply + " `" + r + "`";
-								}else{
+								} else {
 									reply = reply + " `" + message.getGuild().getRoleById(r).getName() + "`";
 								}
 							}
@@ -117,11 +113,10 @@ public class CommandListener extends ListenerAdapter {
 				try {
 					method = clz.getDeclaredMethod(methodName, Message.class, Member.class, String[].class);
 					Object value = method.invoke(this, message, event.getMember(), args);
-					if (value instanceof ReturnMessage){
-						returnMessage = ((ReturnMessage)value);
-					}
-					else if (value instanceof String) {
-						returnMessage = new ReturnMessage(Color.WHITE, (String)value);
+					if (value instanceof ReturnMessage) {
+						returnMessage = ((ReturnMessage) value);
+					} else if (value instanceof String) {
+						returnMessage = new ReturnMessage(Color.WHITE, (String) value);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

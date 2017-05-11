@@ -1,6 +1,8 @@
 package space.gatt.kbb.commands.moderation;
 
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageHistory;
 import space.gatt.kbb.annotations.*;
 import space.gatt.kbb.commandmanager.ReturnMessage;
 
@@ -33,8 +35,8 @@ public class PurgeCommand {
 			return new ReturnMessage(Color.RED,
 					"Attempted to delete **[" + msgs.size() + "]()** messages from this channel. (I'm probably " +
 							"rate-limited now...)");
-		}catch (NumberFormatException e) {
-			return new ReturnMessage(Color.RED,"Improper arguments supplies, must be a number.");
+		} catch (NumberFormatException e) {
+			return new ReturnMessage(Color.RED, "Improper arguments supplies, must be a number.");
 		}
 	}
 }

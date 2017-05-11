@@ -1,10 +1,8 @@
 package space.gatt.kbb.streamtracker;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,39 +20,33 @@ public class StreamTracker {
 		this.key = key;
 	}
 
-	private String insertChannel(String url, String channel)
-	{
-		return url.replace("$c$", channel );
+	private String insertChannel(String url, String channel) {
+		return url.replace("$c$", channel);
 	}
 
-	public JsonElement getStreamData(String targetChannel){
-		try
-		{
-			URL url = new URL(  insertChannel(TWITCH_STREAM, targetChannel) );
+	public JsonElement getStreamData(String targetChannel) {
+		try {
+			URL url = new URL(insertChannel(TWITCH_STREAM, targetChannel));
 			URLConnection conn = url.openConnection();
 			conn.addRequestProperty("Client-id", key);
-			BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ));
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String inputLine = br.readLine();
 			JsonObject jsonObj = new Gson().fromJson(inputLine, JsonObject.class);
 			br.close();
 
 			System.out.println(jsonObj.get("stream").toString());
 			return jsonObj.has("stream") ? jsonObj.get("stream") : null;
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public boolean isStreamLive(JsonElement jsonObj)
-	{
+	public boolean isStreamLive(JsonElement jsonObj) {
 		return jsonObj != null && !jsonObj.toString().equalsIgnoreCase("null");
 	}
 
-	public boolean isStreamLive(String targetChannel)
-	{
+	public boolean isStreamLive(String targetChannel) {
 		JsonElement jsonObj = getStreamData(targetChannel);
 		return jsonObj != null && !jsonObj.toString().equalsIgnoreCase("null");
 	}

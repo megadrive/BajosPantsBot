@@ -3,13 +3,10 @@ package space.gatt.kbb.commands.moderation;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import space.gatt.kbb.KingMain;
 import space.gatt.kbb.annotations.*;
 import space.gatt.kbb.commandmanager.ReturnMessage;
-
-import java.awt.*;
 
 @Command("fixchannels")
 @Syntax("verifyall")
@@ -28,7 +25,7 @@ public class VerifyAllCommand {
 			try {
 				for (TextChannel chnl : message.getGuild().getTextChannels()) {
 					if (!chnl.getName().contains("moderation") && !chnl.getName().contains("admin") && !chnl.getName
-							().contains("boll-debug")&& !chnl.getName
+							().contains("boll-debug") && !chnl.getName
 							().contains("welcome")) {
 						System.out.println(chnl.getName());
 						if (chnl.getPermissionOverride(KingMain.getVerifiedMember()) == null) {
@@ -37,7 +34,7 @@ public class VerifyAllCommand {
 						}
 					}
 				}
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;/*
@@ -53,7 +50,7 @@ public class VerifyAllCommand {
 			}
 			returnMessage.setMessage("Granting roles...");
 			return returnMessage;*/
-		}else{
+		} else {
 			return null;
 		}
 
