@@ -30,22 +30,27 @@ public class KingMain {
 	private static JDA jda;
 	private static MessageManager msgMan;
 	private static HashMap<String, Emote> emoteStorage = new HashMap<>();
-
 	private static Role subMateRole, verifiedMember, cycleColor;
-
 	private static CommandManager cmdMan;
 	private static StreamTracker tracker;
-
+	private static boolean debugMode = false;
 	private static HashMap<String, String> messageStorage = new HashMap<>();
 	private static boolean bajoLastStreamState = false, gattLastStreamState = false, stankyLastStreamState = false;
-
 	public static void setMessage(String key, String mes) {
 		messageStorage.put(key, mes);
 	}
-
 	public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException {
-
 		Settings.setCommandStarter("_");
+		if (args.length > 2){
+			if (args[2].equals("debug")){
+				Settings.setCommandStarter("__");
+				for (int x = 0; x < 50; x++) {
+					System.out.println("Debug mode enabled!");
+				}
+				debugMode = true;
+			}
+		}
+
 		msgMan = new MessageManager();
 		cmdMan = new CommandManager();
 		cmdMan.getAdminusers().add("113462564217683968");
@@ -55,7 +60,11 @@ public class KingMain {
 				.addListener(new EventListener())
 				.setAutoReconnect(true)
 				.buildBlocking();
-		jda.getPresence().setGame(Game.of("in the Washing Machine"));
+		if (!debugMode) {
+			jda.getPresence().setGame(Game.of("in the Washing Machine"));
+		}else{
+			jda.getPresence().setGame(Game.of("in the evil debugging Washing Machine"));
+		}
 		selfuser = jda.getSelfUser();
 		botObject = jda.asBot();
 		bajoGuild = jda.getGuildById("290285351099039747");
@@ -75,14 +84,24 @@ public class KingMain {
 			}
 			for (Emote e : bajoGuild.getEmotes()) {
 				emoteStorage.put(e.getName().toLowerCase(), e);
-				System.out.println(
-						"Registered " + e.getName().toLowerCase() + " for " + e + " (M: " + e.getAsMention() + "  ID: "
-								+ e.getId() + ")");
+				if (debugMode) {
+					System.out.println(
+							"Registered " + e.getName().toLowerCase() + " for " + e + " (M: " + e.getAsMention() + "  ID: "
+									+ e.getId() + ")");
+				}
 			}
 		}
 		tracker = new StreamTracker(args[1]);
-		startStreamTracker();
-		System.out.println("Running from: " + System.getProperty("user.dir"));
+		if (!debugMode) {
+			startStreamTracker();
+		}
+		if (debugMode) {
+			System.out.println("Running from: " + System.getProperty("user.dir"));
+		}
+	}
+
+	public static boolean isDebugMode() {
+		return debugMode;
 	}
 
 	public static MessageManager getMsgMan() {

@@ -24,7 +24,7 @@ public class ServerInfoCommand {
 				generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
 		Emote e2 = KingMain.getBajoGuild().getEmotes().get(
 				generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
-		bldr.append("╔═════════╝" + e1.getAsMention() + "╚═════════╗\n");
+		bldr.append("╔═════════╝ " + e1.getAsMention() + " ╚═════════╗\n");
 		bldr.append("║ **[Server Name:]()** __" + message.getGuild().getName() + "__\n");
 		bldr.append("║ \n");
 		bldr.append("║ **[User Count:]()** __" + message.getGuild().getMembers().size() + "__\n");
@@ -34,10 +34,9 @@ public class ServerInfoCommand {
 		bldr.append("║ **[Owner:]()** __" + message.getGuild().getOwner().getEffectiveName() + "__\n");
 		bldr.append("║ \n");
 		bldr.append("║ **[Emote Count:]()** __" + message.getGuild().getEmotes().size() + "__\n");
-		bldr.append("╚═════════╗" + e2.getAsMention() + "╔═════════╝");
+		bldr.append("╚═════════╗ " + e2.getAsMention() + " ╔═════════╝");
 
-		return new ReturnMessage().setColor(user.getColor()).setMessage(bldr.toString()).setThumbnailURL(message
-				.getGuild()
+		return new ReturnMessage().setColor(user.getColor()).setMessage(bldr.toString()).setThumbnailURL(message.getGuild()
 				.getIconUrl()).setTitle("Server Information");
 	}
 }

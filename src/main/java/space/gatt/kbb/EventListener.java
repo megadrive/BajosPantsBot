@@ -29,23 +29,24 @@ public class EventListener extends ListenerAdapter {
 	public void onMessageReceived(MessageReceivedEvent event) {
 
 		if (event.getChannelType() == ChannelType.TEXT) {
-
-			if (event.getTextChannel().getId().equalsIgnoreCase(KingMain.getColorAssignChannel().getId())
-					|| event.getTextChannel().getId().equalsIgnoreCase("302459681421656065") ||
-					event.getTextChannel().getId().equalsIgnoreCase("309932250114293761")) {
-				KingMain.getScheduler().schedule(() -> {
-					try {
-						if (event.getTextChannel().getMessageById(event.getMessage().getId()).complete(
-								true).getReactions()
-								.size() > 0) {
-							event.getTextChannel().getMessageById(event.getMessage().getId()).complete(true)
-									.clearReactions().complete(true);
-							return;
+			if (!KingMain.isDebugMode()) {
+				if (event.getTextChannel().getId().equalsIgnoreCase(KingMain.getColorAssignChannel().getId())
+						|| event.getTextChannel().getId().equalsIgnoreCase("302459681421656065") ||
+						event.getTextChannel().getId().equalsIgnoreCase("309932250114293761")) {
+					KingMain.getScheduler().schedule(() -> {
+						try {
+							if (event.getTextChannel().getMessageById(event.getMessage().getId()).complete(
+									true).getReactions()
+									.size() > 0) {
+								event.getTextChannel().getMessageById(event.getMessage().getId()).complete(true)
+										.clearReactions().complete(true);
+								return;
+							}
+							event.getMessage().delete().complete(true);
+						} catch (RateLimitedException e) {
 						}
-						event.getMessage().delete().complete(true);
-					} catch (RateLimitedException e) {
-					}
-				}, 5, TimeUnit.SECONDS);
+					}, 5, TimeUnit.SECONDS);
+				}
 			}
 
 			if (!event.getMember().getRoles().contains(KingMain.getVerifiedMember()) && (
@@ -79,7 +80,7 @@ public class EventListener extends ListenerAdapter {
 							(Color.YELLOW).setTitle("THANK THE MAKER").setThumbnailURL
 							("https://cdn.discordapp.com/emojis/311466093329776641.png").setMessage(
 							KingMain.getEmoteStorage().get(
-									"thankthemaker").getAsMention() + user.getEffectiveName() + " cheated " +
+									"thankthemaker").getAsMention() + " " + user.getEffectiveName() + " cheated " +
 									"and **Thanked the Maker**!" + KingMain.getEmoteStorage().get(
 									"thankthemaker").getAsMention()));
 
@@ -92,16 +93,13 @@ public class EventListener extends ListenerAdapter {
 				}
 
 				if (cur.getMinutes() == 17) {
-					Role thankedTheMaker = message.getGuild().getRoleById("309993171939753984");
+					Role thankedTheMaker = message.getGuild().getRoleById("311447038279811076");
 					if (lastThanked == null || (lastThanked.before(cur) && !(lastThanked.getHours() == cur.getHours() &&
 							lastThanked.getDay() == cur.getDay()))) {
 						lastThanked = cur;
-
-
 						KingMain.getMsgMan().sendMessage(event.getTextChannel(),
 								new ReturnMessage().setColor(Color.YELLOW)
-										.setTitle
-												("THANK THE MAKER")
+										.setTitle("THANK THE MAKER")
 										.setThumbnailURL("https://cdn.discordapp.com/emojis/311466093329776641.png")
 										.setMessage(KingMain.getEmoteStorage().get("thankthemaker").getAsMention() + user
 												.getEffectiveName() + " was the first to **Thank the Maker** this hour" +

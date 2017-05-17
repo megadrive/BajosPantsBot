@@ -13,9 +13,9 @@ import java.awt.*;
 
 @Command("addcolour")
 @Syntax("addcolour <ColorRole>")
-@Permissions(ranks = {"299549151945818112"}, ranksById = true)
+@Permissions(ranks = {"309931902612144128"}, ranksById = true)
 @Usage("addcolour")
-@Description("Grants a Sub-Mate a colour")
+@Description("Grants a user a colour")
 @Group("Sub-Mate")
 @CommandSettings(sendResponseViaPM = false, requiresPM = false)
 public class ColorAddCommand {
@@ -24,23 +24,37 @@ public class ColorAddCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		String combinedArgs = KingMain.getCmdMan().combineArguments(args);
 		String color = "C: " + combinedArgs;
-		ReturnMessage returnMessage = new ReturnMessage(Color.WHITE, "");
+		ReturnMessage returnMessage = new ReturnMessage();
+
+		boolean isSubMate = user.getRoles().contains(KingMain.getSubMateRole());
+
 		if (message.getTextChannel().getId().equalsIgnoreCase(KingMain.getColorAssignChannel().getId())) {
 			try {
+
 				Role foundRole = (message.getGuild().getRolesByName(color, true).size() > 0) ? message.getGuild()
 						.getRolesByName(color, true).get(0) : null;
+
 				if (foundRole != null) {
-					if (foundRole.getPositionRaw() < KingMain.getSubMateRole().getPositionRaw()) {
-						if (!user.getRoles().contains(foundRole)) {
+					if (!user.getRoles().contains(foundRole)) {
+
+						if (isSubMate) {
 							message.getGuild().getController().addRolesToMember(user, foundRole).complete(true);
-							returnMessage.setMessage("You've been given the `" + foundRole.getName() + "` colour!");
+							returnMessage.setMessage("You've been given the `" + foundRole.getName().replaceAll("C: ", "") + "` colour!");
 							returnMessage.setColor(Color.GREEN);
-						} else {
-							returnMessage.setMessage(":broken_heart: You already have that colour...");
-							returnMessage.setColor(Color.RED);
+							return returnMessage;
+						}else{
+							if (foundRole.getPositionRaw() < KingMain.getVerifiedMember().getPositionRaw()) {
+								message.getGuild().getController().addRolesToMember(user, foundRole).complete(true);
+								returnMessage.setMessage("You've been given the `" + foundRole.getName().replaceAll("C: ", "") + "` colour!");
+								returnMessage.setColor(Color.GREEN);
+								return returnMessage;
+							} else {
+								returnMessage.setMessage(":broken_heart: That is not a role available to you!");
+								returnMessage.setColor(Color.RED);
+							}
 						}
 					} else {
-						returnMessage.setMessage(":broken_heart: That is not a role available to you!");
+						returnMessage.setMessage(":broken_heart: You already have that colour...");
 						returnMessage.setColor(Color.RED);
 					}
 				} else {
@@ -48,6 +62,7 @@ public class ColorAddCommand {
 							"searching for " + color + ")");
 					returnMessage.setColor(Color.BLUE);
 				}
+
 			} catch (RateLimitedException | PermissionException e) {
 				returnMessage.setMessage(":broken_heart: I can't give you that colour. Sorry~");
 				returnMessage.setColor(Color.RED);

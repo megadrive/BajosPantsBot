@@ -46,20 +46,30 @@ public class UpdateColorsMessageCommand {
 			}
 
 			MessageEmbed intro = new EmbedBuilder().setColor(Color.WHITE).setDescription(
-					"Are you a **Sub-Mate**?! Then you can assign yourself a colour here!\n" +
-							"Simply use the command `_addcolour <ColourName>` and you'll be given the colour!\n" +
+					"**Want to look snazzy?~ Give yourself a colour!**\n"
+					 + "You can assign yourself a colour here!\n" +
+							"Simply use the command `_addcolour ColourName` and you'll be given the colour!\n" +
 							"\n" +
-							"To remove a colour use `_removecolour <ColourName>`\n\n" +
-							"**Below is a list of colours you can give yourself using the commands**"
+							"To remove a colour use `_removecolour ColourName`\n\n" +
+							" **Below is a list of colours you can give yourself using the commands** \n"
+					+ " **Please note:** *Colours with " + KingMain.getEmoteStorage().get("thanks").getAsMention() + " at the end can only be added by Twitch Subscribers!*"
 			).build();
 			messagesToSend.add(intro);
 
 			if (roles.size() > 0) {
 				for (Role rank : roles) {
-					MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription(
-							"**" + rank.getName().replaceAll("C: ", "") + "**"
-					).build();
-					messagesToSend.add(roleMsg);
+					if (rank.getPositionRaw() > KingMain.getVerifiedMember().getPositionRaw()) {
+						MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription(
+								"**" + rank.getName().replaceAll("C: ", "") + "   "  + KingMain.getEmoteStorage().get("thanks").getAsMention() +  "**"
+						).build();
+						messagesToSend.add(roleMsg);
+					}else{
+						MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription(
+								"**" + rank.getName().replaceAll("C: ", "") + "**"
+						).build();
+						messagesToSend.add(roleMsg);
+					}
+
 				}
 			} else {
 				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(

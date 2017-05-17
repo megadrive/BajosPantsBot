@@ -42,14 +42,16 @@ public class UpdateRolesMessageCommand {
 			ArrayList<Role> submateRaffles = new ArrayList<>();
 			for (Role r : message.getGuild().getRoles()) {
 				if (!r.getName().contains("everyone")) {
-					if (r.getPositionRaw() < verifieduserRole.getPositionRaw() && !r.getName().contains("RF: ")) {
-						roles.add(r);
-					}
-					if (r.getName().contains("RF: ")) {
-						if (r.getPositionRaw() < verifieduserRole.getPositionRaw()) {
-							raffles.add(r);
-						} else {
-							submateRaffles.add(r);
+					if (!r.getName().contains("C: ")) {
+						if (r.getPositionRaw() < verifieduserRole.getPositionRaw() && !r.getName().contains("RF: ")) {
+							roles.add(r);
+						}
+						if (r.getName().contains("RF: ")) {
+							if (r.getPositionRaw() < verifieduserRole.getPositionRaw()) {
+								raffles.add(r);
+							} else {
+								submateRaffles.add(r);
+							}
 						}
 					}
 				}
@@ -61,13 +63,13 @@ public class UpdateRolesMessageCommand {
 							"Well, guess it's time to explain how to give yourself roles!\n" +
 							"\n" +
 							"Too grant yourself roles, you must be a `Verified Member`! If you are not a `Verified " +
-							"Member`, then you'll recieve the Role after 10 minutes of being a part of the server!"
+							"Member`, then you can go to <#309932250114293761> and grab the role!"
 			).build();
 			messagesToSend.add(intro);
 
 			MessageEmbed ranksMessages = new EmbedBuilder().setColor(Color.WHITE).setDescription(
-					"**Below is a list of roles you can opt-in or opt-out of using the commands `_optin <Role>` and " +
-							"`_optout <Role>`**"
+					"**Below is a list of roles you can opt-in or opt-out of using the commands `_optin RoleName` and " +
+							"`_optout RoleName`**"
 			).build();
 			messagesToSend.add(ranksMessages);
 
@@ -85,48 +87,51 @@ public class UpdateRolesMessageCommand {
 				).build();
 				messagesToSend.add(roleMsg);
 			}
-
-			MessageEmbed raffleMessages = new EmbedBuilder().setColor(Color.WHITE).setDescription(
-					"**Below is a list of Raffles that EVERYONE can join using the commands " +
-							"`_rafflejoin " +
-							"<RaffleName>` and leave using  `_raffleleave <RaffleName>`**"
-			).build();
-			messagesToSend.add(raffleMessages);
-
 			if (raffles.size() > 0) {
-				for (Role rank : raffles) {
-					MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription("**" + rank
-							.getName().replaceAll("RF: ", "")
-							+ "**"
+
+				MessageEmbed raffleMessages = new EmbedBuilder().setColor(Color.WHITE).setDescription(
+						"**Below is a list of Raffles that EVERYONE can join using the commands " +
+								"`_rafflejoin " +
+								"<RaffleName>` and leave using  `_raffleleave <RaffleName>`**"
+				).build();
+				messagesToSend.add(raffleMessages);
+
+				if (raffles.size() > 0) {
+					for (Role rank : raffles) {
+						MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription("**" + rank
+								.getName().replaceAll("RF: ", "")
+								+ "**"
+						).build();
+						messagesToSend.add(roleMsg);
+					}
+				} else {
+					MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
+							"**There are currently no raffles going on right now!~**"
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			} else {
-				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
-						"**There are currently no raffles going on right now!~**"
-				).build();
-				messagesToSend.add(roleMsg);
 			}
-
-			raffleMessages = new EmbedBuilder().setColor(Color.WHITE).setDescription(
-					"**Below is a list of Raffles that SUB-MATES can join using the commands " +
-							"`_rafflejoin <RaffleName>` and leave using  `_raffleleave <RaffleName>`**"
-			).build();
-			messagesToSend.add(raffleMessages);
-
 			if (submateRaffles.size() > 0) {
-				for (Role rank : submateRaffles) {
-					MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription("**" + rank
-							.getName().replaceAll("RF: ", "")
-							+ "**"
+				MessageEmbed raffleMessages = new EmbedBuilder().setColor(Color.WHITE).setDescription(
+						"**Below is a list of Raffles that SUB-MATES can join using the commands " +
+								"`_rafflejoin <RaffleName>` and leave using  `_raffleleave <RaffleName>`**"
+				).build();
+				messagesToSend.add(raffleMessages);
+
+				if (submateRaffles.size() > 0) {
+					for (Role rank : submateRaffles) {
+						MessageEmbed roleMsg = new EmbedBuilder().setColor(rank.getColor()).setDescription("**" + rank
+								.getName().replaceAll("RF: ", "")
+								+ "**"
+						).build();
+						messagesToSend.add(roleMsg);
+					}
+				} else {
+					MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
+							"**There are currently no Sub-Mate-exclusive raffles going on right now!~**"
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			} else {
-				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
-						"**There are currently no Sub-Mate-exclusive raffles going on right now!~**"
-				).build();
-				messagesToSend.add(roleMsg);
 			}
 
 			try {

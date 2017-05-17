@@ -13,9 +13,9 @@ import java.awt.*;
 
 @Command("removecolour")
 @Syntax("removecolour <ColorRole>")
-@Permissions(ranks = {"299549151945818112"}, ranksById = true)
+@Permissions(ranks = {"309931902612144128"}, ranksById = true)
 @Usage("removecolour")
-@Description("Remove's a colour from a Sub-Mate")
+@Description("Remove's a colour from any user")
 @Group("Sub-Mate")
 @CommandSettings(sendResponseViaPM = false)
 public class ColorRemoveCommand {
@@ -24,23 +24,22 @@ public class ColorRemoveCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		String combinedArgs = KingMain.getCmdMan().combineArguments(args);
 		String color = "C: " + combinedArgs;
-		ReturnMessage returnMessage = new ReturnMessage(Color.WHITE, "");
+		ReturnMessage returnMessage = new ReturnMessage();
+
 		if (message.getTextChannel().getId().equalsIgnoreCase(KingMain.getColorAssignChannel().getId())) {
 			try {
+
 				Role foundRole = (message.getGuild().getRolesByName(color, true).size() > 0) ? message.getGuild()
 						.getRolesByName(color, true).get(0) : null;
+
 				if (foundRole != null) {
-					if (foundRole.getPositionRaw() < KingMain.getSubMateRole().getPositionRaw()) {
-						if (user.getRoles().contains(foundRole)) {
-							message.getGuild().getController().removeRolesFromMember(user, foundRole).complete(true);
-							returnMessage.setMessage("The `" + foundRole.getName() + "` colour has been taken!");
-							returnMessage.setColor(Color.GREEN);
-						} else {
-							returnMessage.setMessage(":broken_heart: You don't have that colour...");
-							returnMessage.setColor(Color.RED);
-						}
+					if (user.getRoles().contains(foundRole)) {
+						message.getGuild().getController().removeRolesFromMember(user, foundRole).complete(true);
+						returnMessage.setMessage("The `" + foundRole.getName().replaceAll("C: ", "") + "` colour has been removed from you!");
+						returnMessage.setColor(Color.GREEN);
+						return returnMessage;
 					} else {
-						returnMessage.setMessage(":broken_heart: That is not a role available to you!");
+						returnMessage.setMessage(":broken_heart: You already have that colour...");
 						returnMessage.setColor(Color.RED);
 					}
 				} else {
@@ -48,6 +47,7 @@ public class ColorRemoveCommand {
 							"searching for " + color + ")");
 					returnMessage.setColor(Color.BLUE);
 				}
+
 			} catch (RateLimitedException | PermissionException e) {
 				returnMessage.setMessage(":broken_heart: I can't give you that colour. Sorry~");
 				returnMessage.setColor(Color.RED);
