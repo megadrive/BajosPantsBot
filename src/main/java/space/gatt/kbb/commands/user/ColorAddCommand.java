@@ -52,7 +52,7 @@ public class ColorAddCommand {
 				returnMessage.setMessage(":broken_heart: I can't give you that colour. Sorry~");
 				returnMessage.setColor(Color.RED);
 			}
-		}else{
+		} else {
 			return null;
 		}
 		return returnMessage;

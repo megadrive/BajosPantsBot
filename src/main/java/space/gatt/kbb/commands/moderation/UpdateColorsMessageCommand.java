@@ -28,7 +28,7 @@ public class UpdateColorsMessageCommand {
 		if (message.getTextChannel().getId().equalsIgnoreCase("302980774511247366")) {
 			TextChannel roleAssign = KingMain.getColorAssignChannel();
 			List<Message> msgs = roleAssign.getHistory().retrievePast(50).complete();
-			for (Message msg : msgs){
+			for (Message msg : msgs) {
 				msg.delete().complete();
 			}
 
@@ -37,7 +37,7 @@ public class UpdateColorsMessageCommand {
 			ArrayList<MessageEmbed> messagesToSend = new ArrayList<>();
 
 			ArrayList<Role> roles = new ArrayList<>();
-			for (Role r : message.getGuild().getRoles()){
+			for (Role r : message.getGuild().getRoles()) {
 				if (!r.getName().contains("everyone")) {
 					if (r.getPositionRaw() < verifieduserRole.getPositionRaw() && r.getName().startsWith("C: ")) {
 						roles.add(r);
@@ -61,7 +61,7 @@ public class UpdateColorsMessageCommand {
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			}else{
+			} else {
 				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
 						"**There are currently no colours that you can give yourself!~**"
 				).build();
@@ -74,18 +74,18 @@ public class UpdateColorsMessageCommand {
 						.parseLenient().appendOffset("+HH:MM", "Z").toFormatter()).replaceAll("Z", "") + "** " +
 						"==============")
 						.complete
-						(true);
+								(true);
 				msg.delete().complete();
 				roleAssign.sendFile(new File(System.getProperty("user.dir") + "/colorassign.png"), msg).complete
 						(true).addReaction("👍").complete(true);
-			}catch (RateLimitedException|IOException e){
+			} catch (RateLimitedException | IOException e) {
 				e.printStackTrace();
 			}
-			for (MessageEmbed emb : messagesToSend){
+			for (MessageEmbed emb : messagesToSend) {
 				try {
 					Message msg = roleAssign.sendMessage(emb).complete(true);
 					msg.addReaction("👍").complete(true);
-				}catch (RateLimitedException e){
+				} catch (RateLimitedException e) {
 				}
 			}
 

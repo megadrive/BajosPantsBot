@@ -37,7 +37,7 @@ public class KingMain {
 	private static StreamTracker tracker;
 
 	private static HashMap<String, String> messageStorage = new HashMap<>();
-	private static boolean bajoLastStreamState = false, gattLastStreamState = false;
+	private static boolean bajoLastStreamState = false, gattLastStreamState = false, stankyLastStreamState = false;
 
 	public static void setMessage(String key, String mes) {
 		messageStorage.put(key, mes);
@@ -95,9 +95,8 @@ public class KingMain {
 
 	private static void startStreamTracker() {
 		getScheduler().scheduleAtFixedRate(() -> {
-			System.out.println("Checking for streams... BajoStream");
+			System.out.println("Checking for streams... bajostream");
 			JsonElement currentBajo = tracker.getStreamData("bajostream");
-			JsonElement currentGatt = tracker.getStreamData("reallygatt");
 			boolean isBajoStreaming = tracker.isStreamLive(currentBajo);
 			System.out.println("Got the data: " + isBajoStreaming);
 			if (bajoLastStreamState != isBajoStreaming) {
@@ -114,14 +113,15 @@ public class KingMain {
 									"channel").getAsJsonObject().get("status").getAsString()
 									+ "\n__**[Viewers:]()**__ " + currentBajo.getAsJsonObject().get("viewers")
 									.getAsString())
+									.setThumbnailURL(currentBajo.getAsJsonObject().get("channel").getAsJsonObject()
+											.get("logo").getAsString())
 									.setDisplayURL("https://twitch.tv/bajostream").setTitle("Twitch.TV Updates")
-									.setImageURL(currentGatt.getAsJsonObject().get("preview").getAsJsonObject()
+									.setImageURL(currentBajo.getAsJsonObject().get("preview").getAsJsonObject()
 											.get("large").getAsString()));
 				}
 			}
-
+			JsonElement currentGatt = tracker.getStreamData("reallygatt");
 			boolean isGattStreaming = tracker.isStreamLive(currentGatt);
-
 			if (gattLastStreamState != isGattStreaming) {
 				gattLastStreamState = isGattStreaming;
 				if (isGattStreaming) {
@@ -137,14 +137,48 @@ public class KingMain {
 									"channel").getAsJsonObject().get("status").getAsString()
 									+ "\n__**[Viewers:]()**__ " + currentGatt.getAsJsonObject().get("viewers")
 									.getAsString())
+									.setThumbnailURL(currentGatt.getAsJsonObject().get("channel").getAsJsonObject()
+											.get("logo").getAsString())
 									.setDisplayURL("https://twitch.tv/reallygatt").setTitle("Twitch.TV Updates")
 									.setImageURL(currentGatt.getAsJsonObject().get("preview").getAsJsonObject()
 											.get("large").getAsString()));
 
 				}
 			}
+			boolean checkStanky = false;
+			if (checkStanky){
+				System.out.println("check stanky");
+				currentGatt = tracker.getStreamData("dspstanky");
+				boolean isStankyStreaming = tracker.isStreamLive(currentGatt);
+				if (stankyLastStreamState != isStankyStreaming) {
+					stankyLastStreamState = isStankyStreaming;
+					if (isStankyStreaming) {
 
-		}, 10, 5 * 60, TimeUnit.SECONDS);
+						getMsgMan().sendMessage(bajoGuild.getTextChannelById("294443160581701632"),
+								new ReturnMessage().setColor(Color.GREEN).setMessage(getEmoteStorage().get("gasp")
+										.getAsMention() + " Oh wow. **[DSPStanky](https://twitch.tv/dspstanky)**" +
+										" " +
+										"is" +
+										" now streaming?! You should [go watch!](https://twitch.tv/dspstanky)" +
+										"\n\n__**[Now Playing:]()**__ " +
+										currentGatt.getAsJsonObject().get("game").getAsString()
+										+ "\n__**[Stream Title:]()**__ " + currentGatt.getAsJsonObject().get(
+										"channel").getAsJsonObject().get("status").getAsString()
+										+ "\n__**[Viewers:]()**__ " + currentGatt.getAsJsonObject().get("viewers")
+										.getAsString())
+										.setThumbnailURL(
+												currentGatt.getAsJsonObject().get("channel").getAsJsonObject()
+														.get("logo").getAsString())
+										.setDisplayURL("https://twitch.tv/reallygatt").setTitle("Twitch.TV Updates")
+										.setImageURL(currentGatt.getAsJsonObject().get("preview").getAsJsonObject()
+												.get("large").getAsString()));
+
+
+					}
+				}
+			}
+
+		}, 10, 10, TimeUnit.SECONDS);
 	}
 
 	private static void startCycleRotator() {

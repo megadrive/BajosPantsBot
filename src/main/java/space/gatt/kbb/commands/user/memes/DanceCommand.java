@@ -19,8 +19,9 @@ public class DanceCommand {
 	@IMethod
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		try {
-			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/dittogif.gif"), null).complete(true);
-		}catch (RateLimitedException|IOException e){
+			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/dittogif.gif"), null).complete(
+					true);
+		} catch (RateLimitedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

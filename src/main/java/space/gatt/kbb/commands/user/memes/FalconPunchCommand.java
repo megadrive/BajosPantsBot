@@ -21,8 +21,8 @@ public class FalconPunchCommand {
 		try {
 			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/falcon-punch-anime.gif"), null)
 					.complete
-					(true);
-		}catch (RateLimitedException|IOException e){
+							(true);
+		} catch (RateLimitedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

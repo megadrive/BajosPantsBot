@@ -24,23 +24,23 @@ public class WhoIsCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 
 		Member targetUser = user;
-		if (message.getMentionedUsers().size() > 0){
+		if (message.getMentionedUsers().size() > 0) {
 			targetUser = message.getGuild().getMember(message.getMentionedUsers().get(0));
 		}
 
-		if (args.length > 0 && message.getMentionedUsers().size() == 0){
+		if (args.length > 0 && message.getMentionedUsers().size() == 0) {
 			String userToFind = KingMain.getCmdMan().combineArguments(args);
 
 			List<Member> scanned = message.getGuild().getMembersByEffectiveName(userToFind, true);
-			if (scanned.size() > 0){
+			if (scanned.size() > 0) {
 				targetUser = scanned.get(0);
-			}else{
+			} else {
 				scanned = message.getGuild().getMembersByNickname(userToFind, true);
-				if (scanned.size() > 0){
+				if (scanned.size() > 0) {
 					targetUser = scanned.get(0);
-				}else{
+				} else {
 					scanned = message.getGuild().getMembersByName(userToFind, true);
-					if (scanned.size() > 0){
+					if (scanned.size() > 0) {
 						targetUser = scanned.get(0);
 					}
 				}
@@ -63,13 +63,15 @@ public class WhoIsCommand {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setThumbnail(targetUser.getUser().getAvatarUrl());
 		builder.setColor(targetUser.getColor());
-		builder.addField("User Information for " + targetUser.getUser().getName() + "#" + targetUser.getUser().getDiscriminator(),
+		builder.addField(
+				"User Information for " + targetUser.getUser().getName() + "#" + targetUser.getUser()
+						.getDiscriminator(),
 				display.toString(),
 				true);
 
 		try {
 			message.getTextChannel().sendMessage(builder.build()).complete(true);
-		}catch (RateLimitedException e){
+		} catch (RateLimitedException e) {
 
 		}
 		return null;

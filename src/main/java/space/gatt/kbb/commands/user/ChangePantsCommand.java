@@ -28,12 +28,12 @@ public class ChangePantsCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		File pantsFolder = new File(System.getProperty("user.dir") + "/avatars/");
 		try {
-			if (pantsFolder.listFiles().length > 0){
+			if (pantsFolder.listFiles().length > 0) {
 				if (currentPants == null) {
 					currentPants = pantsFolder.listFiles()[new Random().nextInt(pantsFolder.listFiles().length)];
-				}else{
+				} else {
 					File targetPants = pantsFolder.listFiles()[new Random().nextInt(pantsFolder.listFiles().length)];
-					while (currentPants == targetPants){
+					while (currentPants == targetPants) {
 						targetPants = pantsFolder.listFiles()[new Random().nextInt(pantsFolder.listFiles().length)];
 					}
 					currentPants = targetPants;
@@ -41,27 +41,29 @@ public class ChangePantsCommand {
 				KingMain.getSelfuser().getManager().setAvatar(Icon.from(currentPants)).complete(false);
 			}
 
-		}catch (ErrorResponseException e){
-			KingMain.getMsgMan().sendMessage(message.getTextChannel(), new ReturnMessage(Color.RED, "Please wait a bit " +
-					"before changing who I am T_T' (ERE)"));
+		} catch (ErrorResponseException e) {
+			KingMain.getMsgMan().sendMessage(message.getTextChannel(),
+					new ReturnMessage(Color.RED, "Please wait a bit " +
+							"before changing who I am T_T' (ERE)"));
 			e.printStackTrace();
 			return null;
-		}catch (IOException e){
-			KingMain.getMsgMan().sendMessage(message.getTextChannel(), new ReturnMessage(Color.RED, "Please wait a bit " +
-					"before changing who I am T_T' (IOE)"));
+		} catch (IOException e) {
+			KingMain.getMsgMan().sendMessage(message.getTextChannel(),
+					new ReturnMessage(Color.RED, "Please wait a bit " +
+							"before changing who I am T_T' (IOE)"));
 			e.printStackTrace();
 			return null;
-		}
-		catch (RateLimitedException e){
-			KingMain.getMsgMan().sendMessage(message.getTextChannel(), new ReturnMessage(Color.RED, "Please wait a bit " +
-					"before changing who I am T_T' (RLE)"));
+		} catch (RateLimitedException e) {
+			KingMain.getMsgMan().sendMessage(message.getTextChannel(),
+					new ReturnMessage(Color.RED, "Please wait a bit " +
+							"before changing who I am T_T' (RLE)"));
 			e.printStackTrace();
 			return null;
 
-		}
-		catch (NullPointerException e){
-			KingMain.getMsgMan().sendMessage(message.getTextChannel(), new ReturnMessage(Color.RED, "Please wait a bit " +
-					"before changing who I am T_T' (NPE)"));
+		} catch (NullPointerException e) {
+			KingMain.getMsgMan().sendMessage(message.getTextChannel(),
+					new ReturnMessage(Color.RED, "Please wait a bit " +
+							"before changing who I am T_T' (NPE)"));
 			e.printStackTrace();
 			return null;
 		}

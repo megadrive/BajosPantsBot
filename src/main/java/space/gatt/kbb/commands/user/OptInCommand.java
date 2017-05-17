@@ -52,7 +52,7 @@ public class OptInCommand {
 				returnMessage.setMessage(":broken_heart: I can't give you that role. Sorry~");
 				returnMessage.setColor(Color.RED);
 			}
-		}else{
+		} else {
 			return null;
 		}
 		return returnMessage;

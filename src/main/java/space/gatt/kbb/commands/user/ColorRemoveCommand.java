@@ -17,7 +17,7 @@ import java.awt.*;
 @Usage("removecolour")
 @Description("Remove's a colour from a Sub-Mate")
 @Group("Sub-Mate")
-@CommandSettings( sendResponseViaPM = false)
+@CommandSettings(sendResponseViaPM = false)
 public class ColorRemoveCommand {
 
 	@IMethod
@@ -52,7 +52,7 @@ public class ColorRemoveCommand {
 				returnMessage.setMessage(":broken_heart: I can't give you that colour. Sorry~");
 				returnMessage.setColor(Color.RED);
 			}
-		}else{
+		} else {
 			return null;
 		}
 		return returnMessage;

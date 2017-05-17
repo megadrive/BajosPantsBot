@@ -22,12 +22,14 @@ public class ReturnMessage {
 		this.color = color;
 		this.message = message;
 	}
+
 	@Deprecated
 	public ReturnMessage(Color color, String message, String imageURL) {
 		this.color = color;
 		this.message = message;
 		this.imageURL = imageURL;
 	}
+
 	@Deprecated
 	public ReturnMessage(Color color, String message, String imageURL, String title) {
 		this.color = color;
@@ -40,12 +42,14 @@ public class ReturnMessage {
 		return imageURL;
 	}
 
-	public Color getColor() {
-		return color;
+	public ReturnMessage setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+		return this;
+
 	}
 
-	public String getMessage() {
-		return message;
+	public Color getColor() {
+		return color;
 	}
 
 	public ReturnMessage setColor(Color color) {
@@ -53,19 +57,12 @@ public class ReturnMessage {
 		return this;
 	}
 
+	public String getMessage() {
+		return message;
+	}
+
 	public ReturnMessage setMessage(String message) {
 		this.message = message;
-		return this;
-	}
-
-	public ReturnMessage setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-		return this;
-
-	}
-
-	public ReturnMessage setTitle(String title) {
-		this.title = title;
 		return this;
 	}
 
@@ -82,6 +79,11 @@ public class ReturnMessage {
 		return title;
 	}
 
+	public ReturnMessage setTitle(String title) {
+		this.title = title;
+		return this;
+	}
+
 	public String getThumbnailURL() {
 		return thumbnailURL;
 	}
@@ -91,8 +93,7 @@ public class ReturnMessage {
 		return this;
 	}
 
-	public MessageEmbed build(){
-		System.out.println("Building...");
+	public MessageEmbed build() {
 		EmbedBuilder embB = new EmbedBuilder();
 		String title = getTitle() != null ? getTitle() : "";
 		String msg = getMessage() != null ? getMessage() : "";
@@ -101,21 +102,18 @@ public class ReturnMessage {
 		String thumb = getThumbnailURL() != null ? getThumbnailURL() : null;
 		String displayURL = getDisplayURL() != null ? getDisplayURL() : null;
 		if (displayURL == null) {
-			System.out.println("No display URL");
 			if (!title.equalsIgnoreCase("")) {
 				embB.addField(title, msg, true);
 			} else {
 				embB.setDescription(msg);
 			}
-		}else{
-			System.out.println("Display URL");
+		} else {
 			embB.setTitle(title, displayURL);
 			embB.setDescription(msg);
 		}
 		embB.setColor(clr);
 		embB.setImage(url);
 		embB.setThumbnail(thumb);
-		System.out.println("Finished");
 		return embB.build();
 	}
 

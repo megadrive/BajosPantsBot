@@ -27,7 +27,8 @@ public class OptOutCommand {
 		if (message.getTextChannel().getId().equalsIgnoreCase("302459681421656065")) {
 			try {
 				Role verifieduserRole = message.getGuild().getRolesByName("Verified Member", true).size() > 0 ?
-						message.getGuild().getRolesByName("Verified Member", true).get(0) : message.getGuild().getRoleById
+						message.getGuild().getRolesByName("Verified Member", true).get(
+								0) : message.getGuild().getRoleById
 						("309931902612144128");
 				Role foundRole = (message.getGuild().getRolesByName(role, true).size() > 0) ? message.getGuild()
 						.getRolesByName(role, true).get(0) : null;
@@ -55,7 +56,7 @@ public class OptOutCommand {
 				returnMessage.setMessage(":broken_heart: I can't give you that role. Sorry~");
 				returnMessage.setColor(Color.RED);
 			}
-		}else{
+		} else {
 			return null;
 		}
 		return returnMessage;

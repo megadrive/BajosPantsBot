@@ -26,13 +26,15 @@ public class IsStreamingCommand {
 		boolean isStreaming = tracker.isStreamLive(check);
 		if (isStreaming) {
 			return new ReturnMessage().setColor(Color.GREEN).setMessage(KingMain.getEmoteStorage().get("gasp")
-					.getAsMention() + " I found Streaming data for that user! Here it is!\n" +
+					.getAsMention() + " Oh wow, " + args[0] + " is streaming! Here's their information!\n" +
 					"\n\n__**[Now Playing:]()**__ " + check.getAsJsonObject().get("game")
 					.getAsString()
 					+ "\n__**[Stream Title:]()**__ " + check.getAsJsonObject().get(
 					"channel").getAsJsonObject().get("status").getAsString()
 					+ "\n__**[Viewers:]()**__ " + check.getAsJsonObject().get("viewers")
 					.getAsString())
+					.setThumbnailURL(check.getAsJsonObject().get("channel").getAsJsonObject()
+							.get("logo").getAsString())
 					.setDisplayURL("https://twitch.tv/" + args[0]).setTitle("Twitch.TV Updates")
 					.setImageURL(check.getAsJsonObject().get("preview").getAsJsonObject()
 							.get("large").getAsString());

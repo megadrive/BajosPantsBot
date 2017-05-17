@@ -39,12 +39,12 @@ public class VerifyUserCommand {
 				returnMessage.setColor(Color.GREEN);
 				returnMessage.setMessage("Well done! Welcome to the club " + user.getEffectiveName() + "! " +
 						KingMain.getEmoteStorage().get("bajoKisses").getAsMention());
-			}else{
+			} else {
 				returnMessage.setColor(Color.RED);
 				returnMessage.setMessage("You're already verified!");
 			}
 			return returnMessage;
-		}else{
+		} else {
 			return null;
 		}
 

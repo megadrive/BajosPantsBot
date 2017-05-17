@@ -35,7 +35,7 @@ public class JavascriptCommand {
 
 		String script = KingMain.getCmdMan().combineArguments(args);
 
-		for (String check : blocked){
+		for (String check : blocked) {
 			if (script.contains(check)) {
 				return new ReturnMessage().setColor(Color.RED).setMessage("JavaScript Eval Expression may be " +
 						"malicious, canceling.");

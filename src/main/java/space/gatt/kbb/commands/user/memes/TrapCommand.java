@@ -20,7 +20,7 @@ public class TrapCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		try {
 			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/trap.jpg"), null).complete(true);
-		}catch (RateLimitedException|IOException e){
+		} catch (RateLimitedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

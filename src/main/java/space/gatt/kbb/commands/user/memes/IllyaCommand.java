@@ -21,8 +21,8 @@ public class IllyaCommand {
 		try {
 			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/illya.gif"), null)
 					.complete
-					(true);
-		}catch (RateLimitedException|IOException e){
+							(true);
+		} catch (RateLimitedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

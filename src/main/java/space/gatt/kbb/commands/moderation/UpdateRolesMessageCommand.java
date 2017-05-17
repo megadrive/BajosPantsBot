@@ -27,7 +27,7 @@ public class UpdateRolesMessageCommand {
 		if (message.getTextChannel().getId().equalsIgnoreCase("302980774511247366")) {
 			TextChannel roleAssign = message.getGuild().getTextChannelById("302459681421656065");
 			List<Message> msgs = roleAssign.getHistory().retrievePast(50).complete();
-			for (Message msg : msgs){
+			for (Message msg : msgs) {
 				msg.delete().complete();
 			}
 
@@ -40,15 +40,15 @@ public class UpdateRolesMessageCommand {
 			ArrayList<Role> roles = new ArrayList<>();
 			ArrayList<Role> raffles = new ArrayList<>();
 			ArrayList<Role> submateRaffles = new ArrayList<>();
-			for (Role r : message.getGuild().getRoles()){
+			for (Role r : message.getGuild().getRoles()) {
 				if (!r.getName().contains("everyone")) {
 					if (r.getPositionRaw() < verifieduserRole.getPositionRaw() && !r.getName().contains("RF: ")) {
 						roles.add(r);
 					}
 					if (r.getName().contains("RF: ")) {
-						if (r.getPositionRaw() < verifieduserRole.getPositionRaw()){
+						if (r.getPositionRaw() < verifieduserRole.getPositionRaw()) {
 							raffles.add(r);
-						}else{
+						} else {
 							submateRaffles.add(r);
 						}
 					}
@@ -57,11 +57,11 @@ public class UpdateRolesMessageCommand {
 
 			MessageEmbed intro = new EmbedBuilder().setColor(Color.WHITE).setDescription(
 					"So, you've made your way here I see...\n" +
-					"\n" +
-					"Well, guess it's time to explain how to give yourself roles!\n" +
-					"\n" +
-					"Too grant yourself roles, you must be a `Verified Member`! If you are not a `Verified " +
-					"Member`, then you'll recieve the Role after 10 minutes of being a part of the server!"
+							"\n" +
+							"Well, guess it's time to explain how to give yourself roles!\n" +
+							"\n" +
+							"Too grant yourself roles, you must be a `Verified Member`! If you are not a `Verified " +
+							"Member`, then you'll recieve the Role after 10 minutes of being a part of the server!"
 			).build();
 			messagesToSend.add(intro);
 
@@ -79,7 +79,7 @@ public class UpdateRolesMessageCommand {
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			}else{
+			} else {
 				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
 						"**There are currently no roles that you can Opt-In or Out from!~**"
 				).build();
@@ -101,7 +101,7 @@ public class UpdateRolesMessageCommand {
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			}else{
+			} else {
 				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
 						"**There are currently no raffles going on right now!~**"
 				).build();
@@ -122,7 +122,7 @@ public class UpdateRolesMessageCommand {
 					).build();
 					messagesToSend.add(roleMsg);
 				}
-			}else{
+			} else {
 				MessageEmbed roleMsg = new EmbedBuilder().setColor(Color.RED).setDescription(
 						"**There are currently no Sub-Mate-exclusive raffles going on right now!~**"
 				).build();
@@ -132,18 +132,19 @@ public class UpdateRolesMessageCommand {
 			try {
 				Message msg = roleAssign.sendMessage("==============** Last Updated : " + message.getCreationTime
 						().format(new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy HH:mm")
-						.parseLenient().appendOffset("+HH:MM", "Z").toFormatter()).replaceAll("Z", "") + "** ==============").complete(true);
+						.parseLenient().appendOffset("+HH:MM", "Z").toFormatter()).replaceAll("Z",
+						"") + "** ==============").complete(true);
 				msg.delete().complete();
 				roleAssign.sendFile(new File(System.getProperty("user.dir") + "/roleassign.png"), msg).complete
 						(true).addReaction("👍").complete(true);
-			}catch (RateLimitedException|IOException e){
+			} catch (RateLimitedException | IOException e) {
 				e.printStackTrace();
 			}
-			for (MessageEmbed emb : messagesToSend){
+			for (MessageEmbed emb : messagesToSend) {
 				try {
 					Message msg = roleAssign.sendMessage(emb).complete(true);
 					msg.addReaction("👍").complete(true);
-				}catch (RateLimitedException e){
+				} catch (RateLimitedException e) {
 				}
 			}
 

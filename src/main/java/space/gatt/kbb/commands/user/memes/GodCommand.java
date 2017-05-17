@@ -21,8 +21,8 @@ public class GodCommand {
 		try {
 			message.getChannel().sendFile(new File(System.getProperty("user.dir") + "/summon.gif"), null)
 					.complete
-					(true);
-		}catch (RateLimitedException|IOException e){
+							(true);
+		} catch (RateLimitedException | IOException e) {
 			e.printStackTrace();
 		}
 		return null;

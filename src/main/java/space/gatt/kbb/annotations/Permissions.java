@@ -13,7 +13,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) //can use in method only.
 public @interface Permissions {
 	String[] value() default "";
+
 	boolean adminOnly() default false;
+
 	String[] ranks() default "null";
+
 	boolean ranksById() default false;
 }

@@ -23,7 +23,7 @@ public class EmbedMessageCommand {
 	@IMethod
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		String[] content = KingMain.getCmdMan().combineArguments(args).split("\\|\\|");
-		if (content.length < 3){
+		if (content.length < 3) {
 			return new ReturnMessage(Color.RED, "Not enough arguments!");
 		}
 		Random r = new Random();
@@ -33,7 +33,7 @@ public class EmbedMessageCommand {
 			if (Color.decode(content[0]) != null) {
 				clr = Color.decode(content[0]);
 			}
-		}catch (NumberFormatException e){
+		} catch (NumberFormatException e) {
 			clr = new Color(r.nextInt(255), r
 					.nextInt(255), r.nextInt(255));
 		}
@@ -43,7 +43,7 @@ public class EmbedMessageCommand {
 		MessageEmbed msgEm = new EmbedBuilder().addField(title, msg, true).setColor(clr).build();
 		try {
 			message.getTextChannel().sendMessage(msgEm).complete(true);
-		}catch (RateLimitedException e){
+		} catch (RateLimitedException e) {
 		}
 		return null;
 	}

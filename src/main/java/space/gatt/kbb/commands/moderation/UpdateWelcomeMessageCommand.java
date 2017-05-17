@@ -31,7 +31,7 @@ public class UpdateWelcomeMessageCommand {
 		if (message.getTextChannel().getId().equalsIgnoreCase("302980774511247366")) {
 			TextChannel roleAssign = KingMain.getBajoGuild().getTextChannelById("309932250114293761");
 			List<Message> msgs = roleAssign.getHistory().retrievePast(50).complete();
-			for (Message msg : msgs){
+			for (Message msg : msgs) {
 				msg.delete().complete();
 			}
 
@@ -39,7 +39,8 @@ public class UpdateWelcomeMessageCommand {
 
 			MessageEmbed intro = new EmbedBuilder().setColor(Color.WHITE).setDescription(
 					"You've been here for at least 10 minutes! It's time to **verify** yourself as a " +
-							"human-being!\nSimply type `_verifyme` and it will all be over!\n\n*Just remember; You do" +
+							"human-being!\nSimply type `_verifyme` and it will all be over!\n\n*Just remember; You " +
+							"do" +
 							"not talk about ~~fight~~ Bajo Club!*"
 			).build();
 			messagesToSend.add(intro);
@@ -51,18 +52,18 @@ public class UpdateWelcomeMessageCommand {
 						.parseLenient().appendOffset("+HH:MM", "Z").toFormatter()).replaceAll("Z", "") + "** " +
 						"==============")
 						.complete
-						(true);
+								(true);
 				msg.delete().complete();
 				roleAssign.sendFile(new File(System.getProperty("user.dir") + "/welcome.png"), msg).complete
 						(true).addReaction("👍").complete(true);
-			}catch (RateLimitedException|IOException e){
+			} catch (RateLimitedException | IOException e) {
 				e.printStackTrace();
 			}
-			for (MessageEmbed emb : messagesToSend){
+			for (MessageEmbed emb : messagesToSend) {
 				try {
 					Message msg = roleAssign.sendMessage(emb).complete(true);
 					msg.addReaction("👍").complete(true);
-				}catch (RateLimitedException e){
+				} catch (RateLimitedException e) {
 				}
 			}
 

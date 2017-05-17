@@ -15,8 +15,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) //can use in method only.
 public @interface CommandSettings {
 	String[] value() default "";
+
 	boolean deleteInitatingMsg() default false;
+
 	boolean sendResponseViaPM() default false;
+
 	boolean requiresPM() default false;
+
 	Class returnType() default ReturnMessage.class;
 }

@@ -7,6 +7,7 @@ import space.gatt.kbb.annotations.*;
 import space.gatt.kbb.commandmanager.ReturnMessage;
 
 import java.awt.*;
+
 @Command("whoami")
 @Syntax("whoami")
 @Permissions(ranks = {"309931902612144128"}, ranksById = true)

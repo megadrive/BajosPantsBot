@@ -20,8 +20,10 @@ public class ServerInfoCommand {
 	public static ReturnMessage command(Message message, Member user, String[] args) {
 		StringBuilder bldr = new StringBuilder();
 		Random generator = new Random();
-		Emote e1 = KingMain.getBajoGuild().getEmotes().get(generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
-		Emote e2 = KingMain.getBajoGuild().getEmotes().get(generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
+		Emote e1 = KingMain.getBajoGuild().getEmotes().get(
+				generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
+		Emote e2 = KingMain.getBajoGuild().getEmotes().get(
+				generator.nextInt(KingMain.getBajoGuild().getEmotes().size()));
 		bldr.append("╔═════════╝" + e1.getAsMention() + "╚═════════╗\n");
 		bldr.append("║ **[Server Name:]()** __" + message.getGuild().getName() + "__\n");
 		bldr.append("║ \n");

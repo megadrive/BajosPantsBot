@@ -31,7 +31,8 @@ public class TextToBrickCommand {
 				sb.append(a);
 			}
 		}
-		return new ReturnMessage().setColor(Color.GREEN).setTitle(user.getEffectiveName() + "'s Text to Brick Message" +
+		return new ReturnMessage().setColor(Color.GREEN).setTitle(user.getEffectiveName() + "'s Text to Brick " +
+				"Message" +
 				".").setMessage(sb.toString());
 	}
 }
